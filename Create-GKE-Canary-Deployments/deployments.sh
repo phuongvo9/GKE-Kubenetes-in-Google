@@ -19,3 +19,10 @@ gcloud config list project
 source <(kubectl completion bash)
 # Get GKE credential
 gcloud container clusters get-credentials $my_cluster --zone $my_zone
+
+git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+
+# Create a soft link as a shortcut to the working director
+ln -s ~/training-data-analyst/courses/ak8s/v1.1 ~/ak8s
+cd ~/ak8s/Deployments/
+
