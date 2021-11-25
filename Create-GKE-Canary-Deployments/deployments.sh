@@ -51,3 +51,10 @@ kubectl rollout status deployment.v1.apps/nginx-deployment
         # Waiting for deployment "nginx-deployment" rollout to finish: 1 old replicas are pending termination...
         # deployment "nginx-deployment" successfully rolled out
 
+# View the rollout history of the deployment
+kubectl rollout history deployment nginx-deployment
+
+
+# Trigger a deployment rollback
+kubectl rollout undo deployments nginx-deployment
+kubectl rollout history deployment nginx-deployment
