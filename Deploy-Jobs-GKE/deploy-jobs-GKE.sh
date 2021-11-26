@@ -31,3 +31,34 @@ kubectl logs [POD-NAME]
 
 # Delete job
 kubectl delete job example-job
+
+
+##############################
+### CREATE AND RUN A CronJob
+##############################
+
+# All CronJob times are in UTC
+# Note
+
+# CronJobs use the required schedule field, which accepts a time in the Unix standard crontab format. All CronJob times are in UTC:
+
+# The first value indicates the minute (between 0 and 59).
+# The second value indicates the hour (between 0 and 23).
+# The third value indicates the day of the month (between 1 and 31).
+# The fourth value indicates the month (between 1 and 12).
+# The fifth value indicates the day of the week (between 0 and 6).
+# The schedule field also accepts * and ? as wildcard values. Combining / with ranges specifies that the task should repeat at a regular interval. In the example, */1 * * * * indicates that the task should repeat every minute of every day of every month.
+
+kubectl apply -f example-cronjob.yaml
+
+kubectl get jobs
+
+kubectl describe job [job_name]
+
+kubectl logs [POD-NAME]
+kubectl get jobs
+
+# Delete cronjob
+kubectl delete cronjob hello
+
+kubectl get jobs
