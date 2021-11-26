@@ -58,3 +58,10 @@ kubectl rollout history deployment nginx-deployment
 # Trigger a deployment rollback
 kubectl rollout undo deployments nginx-deployment
 kubectl rollout history deployment nginx-deployment
+
+### Define the service type in the manifest
+
+kubectl apply -f ./service-nginx.yaml
+
+
+### Perform a canary deployment
