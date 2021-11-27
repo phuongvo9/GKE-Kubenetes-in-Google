@@ -25,3 +25,17 @@ gcloud container clusters create repd \
 # Add the stable chart repository:
 helm repo add stable https://charts.helm.sh/stable
 helm repo update
+
+
+# Create the StorageClass
+kubectl apply -f - <<EOF
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: repd-west1-a-b-c
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-standard
+  replication-type: regional-pd
+  zones: us-west1-a, us-west1-b, us-west1-c
+EOF
