@@ -14,3 +14,10 @@ gcloud container clusters create repd \
   --region=us-west1 \
   --num-nodes=1 \
   --node-locations=us-west1-a,us-west1-b,us-west1-c
+
+######################################################
+### Deploying the App with a Regional Disk
+######################################################
+# Add the stable chart repository to Helm (a toolset for managing Kubernetes packages)
+# Create the Kubernetes StorageClass that is used by the regional persistent disk
+# Deploy WordPress
