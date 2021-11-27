@@ -18,6 +18,10 @@ gcloud container clusters create repd \
 ######################################################
 ### Deploying the App with a Regional Disk
 ######################################################
-# Add the stable chart repository to Helm (a toolset for managing Kubernetes packages)
-# Create the Kubernetes StorageClass that is used by the regional persistent disk
-# Deploy WordPress
+    # Add the stable chart repository to Helm (a toolset for managing Kubernetes packages)
+    # Create the Kubernetes StorageClass that is used by the regional persistent disk
+    # Deploy WordPress
+
+# Add the stable chart repository:
+helm repo add stable https://charts.helm.sh/stable
+helm repo update
