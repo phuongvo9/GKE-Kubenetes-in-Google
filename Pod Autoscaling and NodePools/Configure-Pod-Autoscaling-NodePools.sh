@@ -93,4 +93,26 @@ gcloud container node-pools create "temp-pool-1" \
 --num-nodes "2" --node-labels=temp=true --preemptible
 
 # All the nodes that we added have the temp=true label because we set that label when we created the node-pool
+# This label makes it easier to locate and configure these nodes
 kubectl get nodes
+kubectl get nodes -l temp=true
+
+
+#### Control scheduling with taints and tolerations ########
+
+# To prevent the scheduler from running a Pod on the temporary nodes, we add a taint to each of the nodes in the temp pool
+# Taints are implemented as a key-value pair with an effect (such as NoExecute) that determines whether Pods can run on a certain node.
+# Only nodes that are configured to tolerate the key-value of the taint are scheduled to run on these nodes.
+
+kubectl taint node -l temp=true nodetype=preemptible:NoExecute
+
+# Edit the web.yaml file to add the following key in the template's spec section
+    # tolerations:
+    # - key: "nodetype"
+    #   operator: Equal
+    #   value: "preemptible"
+# To force the web deployment to use the new node-pool add a nodeSelector key in the template's spec section
+
+    #  nodeSelector:
+    #     temp: "true"
+kubectl apply -f web-tolerations.yaml
