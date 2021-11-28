@@ -23,3 +23,7 @@ ln -s ~/training-data-analyst/courses/ak8s/v1.1 ~/ak8s
 cd ~/ak8s/Autoscaling/
 kubectl create -f web.yaml --save-config
 
+# Create a service resource of type NodePort on port 8080 for the web deployment
+kubectl expose deployment web --target-port=8080 --type=NodePort
+
+
