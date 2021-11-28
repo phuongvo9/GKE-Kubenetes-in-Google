@@ -25,6 +25,9 @@ gcloud beta container --project "qwiklabs-gcp-01-811c28398b48" clusters create "
     --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver \
     --enable-autoupgrade --enable-autorepair --max-surge-upgrade 1 --max-unavailable-upgrade 0 --enable-shielded-nodes \
     --node-locations "us-central1-a"
-    
+
 gcloud container clusters describe private-cluster --region us-central1-a
+
+# privateEndpoint, an internal IP address. Nodes use this internal IP address to communicate with the cluster master.
+# publicEndpoint, an external IP address. External services and administrators can use the external IP address to communicate with the cluster master.
 
