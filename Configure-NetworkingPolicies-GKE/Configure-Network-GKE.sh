@@ -31,3 +31,48 @@ gcloud container clusters describe private-cluster --region us-central1-a
 # privateEndpoint, an internal IP address. Nodes use this internal IP address to communicate with the cluster master.
 # publicEndpoint, an external IP address. External services and administrators can use the external IP address to communicate with the cluster master.
 
+# We have several options to lock down our cluster to varying degrees:
+
+# The whole cluster can have external access.
+# The whole cluster can be private.
+# The nodes can be private while the cluster master is public, and you can limit which external networks are authorized to access the cluster master.
+
+
+#######################################
+####Create a cluster network policy#####
+
+# 1 Create another GKE cluster
+export my_zone=us-central1-a
+export my_cluster=standard-cluster-1
+source <(kubectl completion bash)
+
+gcloud container clusters create $my_cluster --num-nodes 3 --enable-ip-alias --zone $my_zone --enable-network-policy
+
+gcloud container clusters get-credentials $my_cluster --zone $my_zone
+
+git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+ln -s ~/training-data-analyst/courses/ak8s/v1.1 ~/ak8s
+cd ~/ak8s/GKE_Networks/
+
+# Restrict incoming traffic to Pods
+        # kind: NetworkPolicy
+        # apiVersion: networking.k8s.io/v1
+        # metadata:
+        # name: hello-allow-from-foo
+        # spec:
+        # policyTypes:
+        # - Ingress
+        # podSelector:
+        #     matchLabels:
+        #     app: hello
+        # ingress:
+        # - from:
+        #     - podSelector:
+        #         matchLabels:
+        #         app: foo
+kubectl apply -f hello-allow-from-foo.yaml
+
+kubectl get networkpolicy
+
+
+
