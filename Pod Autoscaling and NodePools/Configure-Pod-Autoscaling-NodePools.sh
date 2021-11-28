@@ -37,3 +37,14 @@ kubectl get deployment
 kubectl autoscale deployment web --max 4 --min 1 --cpu-percent 1
 
 kubectl get deployment
+
+# Inspect the HorizontalPodAutoscaler object
+
+    # kubectl autoscale command we used in the previous step creates a HorizontalPodAutoscaler object that targets a specified resource, called the scale target, and scales it as needed. 
+    # The autoscaler periodically adjusts the number of replicas of the scale target to match the average CPU utilization that we specify when creating the autoscaler.
+# get the list of HorizontalPodAutoscaler resources
+kubectl get hpa
+
+    # Ouput
+    # NAME   REFERENCE        TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+    # web    Deployment/web   <unknown>/1%   1         4         0          6s
