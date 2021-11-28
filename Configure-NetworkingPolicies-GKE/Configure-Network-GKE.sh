@@ -76,3 +76,28 @@ kubectl get networkpolicy
 
 
 
+### Validate the ingress policy
+
+# Run a temporary Pod called test-1 with the label app=foo and get a shell in the Pod.
+kubectl run test-1 --labels app=foo --image=alpine --restart=Never --rm --stdin --tty
+
+        # --stdin ( alternatively -i ) creates an interactive session attached to STDIN on the container.
+
+        # --tty ( alternatively -t ) allocates a TTY for each container in the pod.
+
+        # --rm instructs Kubernetes to treat this as a temporary Pod that will be removed as soon as it completes its startup task. As this is an interactive session it will be removed as soon as the user exits the session.
+
+        # --label ( alternatively -l ) adds a set of labels to the pod.
+
+        # --restart defines the restart policy for the Pod
+
+
+# Make a request to the hello-web:8080 endpoint to verify that the incoming traffic is allowed
+wget -qO- --timeout=2 http://hello-web:8080
+
+
+# run a different Pod using the same Pod name but using a label, app=other, that does not match the podSelector in the active network policy. This Pod should not have the ability to access the hello-web application
+
+kubectl run test-1 --labels app=other --image=alpine --restart=Never --rm --stdin --tty
+wget -qO- --timeout=2 http://hello-web:8080
+
