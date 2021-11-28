@@ -116,3 +116,38 @@ kubectl taint node -l temp=true nodetype=preemptible:NoExecute
     #  nodeSelector:
     #     temp: "true"
 kubectl apply -f web-tolerations.yaml
+
+### Verify the change
+# inspect the running web Pod
+
+kubectl describe pods -l run=web
+
+# A Tolerations section with nodetype=preemptible in the list should appear near the bottom
+    # <SNIP>
+    # Node-Selectors:  temp=true
+    # Tolerations:     node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+    #                 node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+    #                 nodetype=preemptible
+    # Events:
+    # <SNIP>
+
+# force the web application to scale out again scale the loadgen deployment back to four replicas
+kubectl scale deployment loadgen --replicas 4
+kubectl get pods -o wide
+#  shows that the loadgen app is running only on default-pool nodes while the web app is running only the preemptible nodes in temp-pool-1
+
+
+
+#####
+#The taint setting prevents Pods from running on the preemptible nodes so the loadgen application only runs on the default pool.
+# The toleration setting allows the web application to run on the preemptible nodes and the nodeSelector forces the web application Pods to run on those nodes.
+
+    # NAME        READY STATUS    [...]         NODE
+    # Loadgen-x0  1/1   Running   [...]         gke-xx-default-pool-y0
+    # loadgen-x1  1/1   Running   [...]         gke-xx-default-pool-y2
+    # loadgen-x3  1/1   Running   [...]         gke-xx-default-pool-y3
+    # loadgen-x4  1/1   Running   [...]         gke-xx-default-pool-y4
+    # web-x1      1/1   Running   [...]         gke-xx-temp-pool-1-z1
+    # web-x2      1/1   Running   [...]         gke-xx-temp-pool-1-z2
+    # web-x3      1/1   Running   [...]         gke-xx-temp-pool-1-z3
+    # web-x4      1/1   Running   [...]         gke-xx-temp-pool-1-z4
