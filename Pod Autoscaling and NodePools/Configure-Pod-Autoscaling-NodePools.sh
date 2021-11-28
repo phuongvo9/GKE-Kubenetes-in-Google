@@ -48,3 +48,35 @@ kubectl get hpa
     # Ouput
     # NAME   REFERENCE        TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
     # web    Deployment/web   <unknown>/1%   1         4         0          6s
+kubectl describe horizontalpodautoscaler web
+
+# view the configuration of HorizontalPodAutoscaler in YAML form
+kubectl get horizontalpodautoscaler web -o yaml
+
+
+################################################################################################
+### Test the autoscale configuration
+################################################################################################
+
+# to create a heavy load on the web application to force it to scale out.
+# create the load on our web application by deploying the loadgen application using the loadgen.yaml file
+
+kubectl apply -f loadgen.yaml
+
+kubectl get deployment
+    # NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+    # loadgen   4/4     4            4           28s
+    # web       2/4     4            2           14m
+
+kubectl get hpa
+    # NAME   REFERENCE        TARGETS   MINPODS   MAXPODS   REPLICAS   AGE
+    # web    Deployment/web   80%/1%    1         4         4          7m22s
+
+
+# stop the load on the web application, scale the loadgen deployment to zero replicas
+kubectl scale deployment loadgen --replicas 0
+
+kubectl get deployment
+    # NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+    # loadgen   0/0     0            0           117s
+    # web       2/4     4            2           16m
