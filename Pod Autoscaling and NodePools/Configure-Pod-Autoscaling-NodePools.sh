@@ -26,4 +26,14 @@ kubectl create -f web.yaml --save-config
 # Create a service resource of type NodePort on port 8080 for the web deployment
 kubectl expose deployment web --target-port=8080 --type=NodePort
 
+kubectl get service web
 
+
+################################################################################################
+# Configure autoscaling on the cluster
+################################################################################################
+
+kubectl get deployment
+kubectl autoscale deployment web --max 4 --min 1 --cpu-percent 1
+
+kubectl get deployment
