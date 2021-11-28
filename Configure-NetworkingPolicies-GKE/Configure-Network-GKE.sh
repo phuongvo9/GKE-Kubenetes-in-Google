@@ -101,3 +101,31 @@ wget -qO- --timeout=2 http://hello-web:8080
 kubectl run test-1 --labels app=other --image=alpine --restart=Never --rm --stdin --tty
 wget -qO- --timeout=2 http://hello-web:8080
 
+
+
+##########################################
+# Restrict outgoing traffic from the Pods - create egress policy
+##########################################
+        # kind: NetworkPolicy
+        # apiVersion: networking.k8s.io/v1
+        # metadata:
+        # name: foo-allow-to-hello
+        # spec:
+        # policyTypes:
+        # - Egress
+        # podSelector:
+        #     matchLabels:
+        #     app: foo
+        # egress:
+        # - to:
+        #     - podSelector:
+        #         matchLabels:
+        #         app: hello
+        # - to:
+        #     ports:
+        #     - protocol: UDP
+        #     port: 53
+kubectl apply -f foo-allow-to-hello.yaml
+
+kubectl get networkpolicy
+
