@@ -140,7 +140,10 @@ kubectl run test-3 --labels app=foo --image=alpine --restart=Never --rm --stdin 
 wget -qO- --timeout=2 http://hello-web:8080
 
 
-
+    # / # wget -qO- --timeout=2 http://hello-web:8080
+    # Hello, world!
+    # Version: 1.0.0
+    # Hostname: hello-web
 
 # Verify that the Pod cannot establish connections to hello-web-2:8080.
 
