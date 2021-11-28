@@ -80,3 +80,17 @@ kubectl get deployment
     # NAME      READY   UP-TO-DATE   AVAILABLE   AGE
     # loadgen   0/0     0            0           117s
     # web       2/4     4            2           16m
+kubectl get deployment
+
+################################################################################################
+### Manage Node Pools
+################################################################################################
+# ADD A NODE POOL
+    # deploy a new node pool with three preemptible VM instances
+
+gcloud container node-pools create "temp-pool-1" \
+--cluster=$my_cluster --zone=$my_zone \
+--num-nodes "2" --node-labels=temp=true --preemptible
+
+# All the nodes that we added have the temp=true label because we set that label when we created the node-pool
+kubectl get nodes
