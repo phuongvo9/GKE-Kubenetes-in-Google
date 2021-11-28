@@ -15,3 +15,11 @@ source <(kubectl completion bash)
 
 gcloud container clusters get-credentials $my_cluster --zone $my_zone
 
+# Deploy a sample web application to the GKE cluster - web.yaml
+    # Refer to web.yaml
+
+git clone https://github.com/GoogleCloudPlatform/training-data-analyst
+ln -s ~/training-data-analyst/courses/ak8s/v1.1 ~/ak8s
+cd ~/ak8s/Autoscaling/
+kubectl create -f web.yaml --save-config
+
