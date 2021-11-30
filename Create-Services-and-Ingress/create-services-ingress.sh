@@ -47,5 +47,27 @@ kubectl get deployments
 
 kubectl apply -f ./hello-svc.yaml
 
+kubectl get service hello-svc
+
+### TEST THE APPLICATION
+    # open an HTTP session to the new service | Outside the cluster
+curl hello-svc.default.svc.cluster.local
+    #Output: curl: (6) Could not resolve host: hello-svc.default.svc.cluster.local
+
+# Test inside
+    # Go to a pod inside the cluster
+kubectl exec -it dns-demo-1 -- /bin/bash
+    apt-get install -y curl
+        # curl is already the newest version (7.74.0-1.3+b1).
+        # 0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+        # root@dns-demo-1:/# curl hello-svc.default.svc.cluster.local
+        # Hello, world!
+        # Version: 1.0.0
+        # Hostname: hello-v1-695896495d-7wq46
+# Confirmed: This connection works because the clusterIP can be resolved using the internal DNS within the Kubernetes Engine cluster.
+
+
+
+
 
 
