@@ -94,6 +94,49 @@ curl hello-svc.default.svc.cluster.local
     # Networking > VPC Network > External IP Addresses > + Reserve static address
         #Reserve: "regional-loadbalancer" & "global-ingress"
 
+###################################################
+### Deploy a new set of Pods and a LoadBalancer service
+###################################################
+
+# deploy a new set of Pods running a different version of the application
+# expose the new Pods as a LoadBalancer service and access the service from outside the cluster.
+# hello-v2.yaml
+
+kubectl apply -f hello-v2.yaml
+
+kubectl get deployments
+
+# Define service types in the manifest - hello-lb-svc.yaml
+    #  use the sed command to replace the 10.10.10.10 placeholder address in the load balancer yaml file with the static address
+
+
+
+# save the regional static IP-address I created earlier 
+export STATIC_LB=$(gcloud compute addresses describe regional-loadbalancer --region us-central1 --format json | jq -r '.address')
+sed -i "s/10\.10\.10\.10/$STATIC_LB/g" hello-lb-svc.yaml
+    # 34.132.116.131
+
+cat hello-lb-svc.yaml
+                # apiVersion: v1
+                # kind: Service
+                # metadata:
+                # name: hello-lb-svc
+                # spec:
+                # type: LoadBalancer
+                # loadBalancerIP: 34.132.116.131
+                # selector:
+                #     name: hello-v2
+                # ports:
+                # - protocol: TCP
+                #     port: 80
+                #     targetPort: 8080
+kubectl get services
+            # NAME           TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+            # dns-demo       ClusterIP      None          <none>        1234/TCP       35m
+            # hello-lb-svc   LoadBalancer   10.12.10.49   <pending>     80:30277/TCP   24s
+            # hello-svc      NodePort       10.12.6.36    <none>        80:30100/TCP   25m
+            # kubernetes     ClusterIP      10.12.0.1     <none>        443/TCP        54m
+
 
 
 
