@@ -45,3 +45,7 @@ kubectl get deployments
 
 # deploy a Service using a ClusterIP using the hello-svc.yaml
 
+kubectl apply -f ./hello-svc.yaml
+
+
+
