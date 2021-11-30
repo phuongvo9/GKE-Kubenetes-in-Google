@@ -84,3 +84,16 @@ curl hello-svc.default.svc.cluster.local
     # curl: (6) Could not resolve host: hello-svc.default.svc.cluster.local
 # Inside the pod - can curl
 
+
+
+###################################################
+### Create static public IP addresses using Google Cloud Networking
+###################################################
+
+# Create in GCP console UI
+    # Networking > VPC Network > External IP Addresses > + Reserve static address
+        #Reserve: "regional-loadbalancer" & "global-ingress"
+
+
+
+
