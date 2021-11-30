@@ -92,7 +92,8 @@ curl hello-svc.default.svc.cluster.local
 
 # Create in GCP console UI
     # Networking > VPC Network > External IP Addresses > + Reserve static address
-        #Reserve: "regional-loadbalancer" & "global-ingress"
+        #Reserve: "regional-loadbalancer" - Type: Regional PUBLIC IP
+        #Reservce: "global-ingress" - Type: Global Public IP
 
 ###################################################
 ### Deploy a new set of Pods and a LoadBalancer service
@@ -137,6 +138,38 @@ kubectl get services
             # hello-svc      NodePort       10.12.6.36    <none>        80:30100/TCP   25m
             # kubernetes     ClusterIP      10.12.0.1     <none>        443/TCP        54m
 
+### TEST The APplication version 2
+curl $STATIC_LB
+        # Hello, world!
+        # Version: 2.0.0
+        # Hostname: hello-v2-569cc4bf64-vw2pd
 
 
+###############################################
+##### Deploy an Ingress resource
 
+# deploy an Ingress resource that will direct traffic to both services based on the URL entered by the user
+
+# Create an ingress resource
+
+            # apiVersion: app/v1
+            # kind: Ingress
+            # metadata:
+            # name: hello-ingress
+            # annotations:
+            #     nginx.ingress.kubernetes.io/rewrite-target: /
+            #     kubernetes.io/ingress.global-static-ip-name: "global-ingress"
+            # spec:
+            # rules:
+            # - http:
+            #     Paths:
+            #     - path: /v1
+            #         backend:
+            #         serviceName: hello-svc
+            #         servicePort: 80
+            #     - path: /v2
+            #         backend:
+            #         serviceName: hello-lb-svc
+            #         servicePort: 80
+
+kubectl apply -f hello-ingress.yaml
