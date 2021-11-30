@@ -173,3 +173,10 @@ curl $STATIC_LB
             #         servicePort: 80
 
 kubectl apply -f hello-ingress.yaml
+
+
+# Inspect the changes in GCP console
+    # Networking > Network services> Load balancing.
+    # two load balancers listed:
+        # 1. regional load balancer for the hello-lb-svc service.  configured to load balance TCP port 80 traffic to the cluster nodes.
+        # 2. Ingress object and is a full HTTP(S) load balancer that includes host and path rules that match the Ingress configuration
