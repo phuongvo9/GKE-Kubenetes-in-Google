@@ -66,8 +66,21 @@ kubectl exec -it dns-demo-1 -- /bin/bash
         # Hostname: hello-v1-695896495d-7wq46
 # Confirmed: This connection works because the clusterIP can be resolved using the internal DNS within the Kubernetes Engine cluster.
 
+###################################################
+### Convert the service to use NodePort
+###################################################
 
+    #  convert the existing ClusterIP service to a NodePort service and then retest access to the service from inside and outside the cluster.
+# deploy the manifest that changes the service type for the hello-svc from ClusterIP to NodePort
+kubectl apply -f ./hello-nodeport-svc.yaml
 
+kubectl get service hello-svc
+    #Output:
+        # NAME        TYPE       CLUSTER-IP   EXTERNAL-IP   PORT(S)        AGE
+        # hello-svc   NodePort   10.12.6.36   <none>        80:30100/TCP   9m46s
 
-
+### Test the application with NodePort
+curl hello-svc.default.svc.cluster.local
+    # curl: (6) Could not resolve host: hello-svc.default.svc.cluster.local
+# Inside the pod - can curl
 
