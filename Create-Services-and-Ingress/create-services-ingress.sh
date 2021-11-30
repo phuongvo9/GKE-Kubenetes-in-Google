@@ -36,3 +36,12 @@ ping dns-demo-2.dns-demo.default.svc.cluster.local
 #Ping the dns-demo service's FQDN, instead of a specific Pod inside the service
 ping dns-demo.default.svc.cluster.local
 
+# Deploy a sample workload and a ClusterIP service
+    # create a deployment manifest for a set of Pods within the cluster and then expose them using a ClusterIP service
+# deploy a sample web application container image that listens on an HTTP server on port 8080 - hello-v1.yaml
+kubectl create -f hello-v1.yaml
+
+kubectl get deployments
+
+# deploy a Service using a ClusterIP using the hello-svc.yaml
+
