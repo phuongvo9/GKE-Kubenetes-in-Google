@@ -11,9 +11,9 @@
 gcloud auth list
 gcloud config list project
 
-########################################################################################################
-### Create PVs and PVCs
-########################################################################################################
+########################
+# Create PVs and PVCs
+########################
 
 export my_zone=us-central1-a
 export my_cluster=standard-cluster-1
@@ -46,5 +46,29 @@ kubectl get persistentvolumeclaim
 
 kubectl apply -f pvc-demo.yaml
 kubectl get persistentvolumeclaim
+
+
+#################################################################
+# Mount and verify Google Cloud persistent disk PVCs in Pods @@@
+#################################################################
+    #  attach the persistent disk PVC to a Pod.  mount the PVC as a volume as part of the manifest for the Pod.
+
+    # The manifest file pod-volume-demo.yaml deploys an nginx container, attaches the pvc-demo-volume to the Pod and mounts that volume to the path /var/www/html inside the nginx container.
+    # Files saved to this directory inside the container will be saved to the persistent volume and persist even if the Pod and the container are shutdown and recreated.
+                    # kind: Pod
+                    # apiVersion: v1
+                    # metadata:
+                    # name: pvc-demo-pod
+                    # spec:
+                    # containers:
+                    #     - name: frontend
+                    #     image: nginx
+                    #     volumeMounts:
+                    #     - mountPath: "/var/www/html"
+                    #         name: pvc-demo-volume
+                    # volumes:
+                    #     - name: pvc-demo-volume
+                    #     persistentVolumeClaim:
+                    #         claimName: hello-web-disk
 
 
