@@ -165,3 +165,48 @@ kubectl get pods
             #         storage: 30Gi
 kubectl apply -f statefulset-demo.yaml
 
+###############################################################
+############## Verify the connection of Pods in StatefulSets
+kubectl describe statefulset statefulset-demo
+#Info out:
+    # Normal  SuccessfulCreate  10s   statefulset-controller
+    # Message: create Claim hello-web-disk-statefulset-demo-0 Pod statefulset-demo-0 in StatefulSet statefulset-demo success
+    # Normal  SuccessfulCreate  10s   statefulset-controller
+    # Message: create Pod statefulset-demo-0 in StatefulSet statefulset-demo successful
+kubectl get pods
+kubectl get pvc
+kubectl describe pvc hello-web-disk-statefulset-demo-0
+
+
+########################################################################################
+# Verify the persistence of Persistent Volume connections to Pods managed by StatefulSets
+#   verify the connection of Pods in StatefulSets to particular PVs as the Pods are stopped and restarted.
+#####################################################################################33
+
+# verify the connection of Pods in StatefulSets to particular PVs as the Pods are stopped and restarted.
+kubectl exec -it statefulset-demo-0 -- sh
+
+    cat /var/www/html/index.html
+    # create a simple text message as a web page
+    echo Test webpage in a persistent volume!>/var/www/html/index.html
+    chmod +x /var/www/html/index.html
+
+    cat /var/www/html/index.html
+
+# Delete the Pod where I updated the file on the PVC
+kubectl delete pod statefulset-demo-0
+
+kubectl get pods
+### StatefulSet is automatically restarting the statefulset-demo-0 Pod.
+
+# Connect to the shell on the new statefulset-demo-0 Pod.
+
+kubectl exec -it statefulset-demo-0 -- sh
+
+    cat /var/www/html/index.html
+    # Output: Test webpage in a persistent volume!
+    exit
+
+
+
+    
