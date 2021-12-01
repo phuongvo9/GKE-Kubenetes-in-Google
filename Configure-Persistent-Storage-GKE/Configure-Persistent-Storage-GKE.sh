@@ -72,3 +72,16 @@ kubectl get persistentvolumeclaim
                     #         claimName: hello-web-disk
 
 
+kubectl apply -f pod-volume-demo.yaml
+
+kubectl get pods
+
+# verify the PVC is accessible within the Pod
+kubectl exec -it pvc-demo-pod -- sh
+
+# create a simple text message as a web page in the Pod
+    echo Test webpage in a persistent volume!>/var/www/html/index.html
+    chmod +x /var/www/html/index.html
+    cat /var/www/html/index.html
+    exit
+
