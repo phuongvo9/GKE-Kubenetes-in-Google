@@ -102,3 +102,66 @@ kubectl exec -it pvc-demo-pod -- sh
 
     cat /var/www/html/index.html
     #Output: Test webpage in a persistent volume!
+
+
+
+#################################################################
+# Create StatefulSets with PVCs
+# Note:  StatefulSet is like a Deployment, except that the Pods are given unique identifiers
+#################################################################
+
+kubectl delete pod pvc-demo-pod
+kubectl get pods
+
+
+#### Create a StatefulSet
+    # cat statefulset-demo.yaml
+    # creates a StatefulSet that includes a LoadBalancer service and three replicas of a Pod containing an nginx container and a volumeClaimTemplate for 30 gigabyte PVCs with the name hello-web-disk. The nginx containers mount the PVC called hello-web-disk at /var/www/html
+
+            # kind: Service
+            # apiVersion: v1
+            # metadata:
+            # name: statefulset-demo-service
+            # spec:
+            # ports:
+            # - protocol: TCP
+            #     port: 80
+            #     targetPort: 9376
+            # type: LoadBalancer
+            # ---
+            # apiVersion: apps/v1
+            # kind: StatefulSet
+            # metadata:
+            # name: statefulset-demo
+            # spec:
+            # selector:
+            #     matchLabels:
+            #     app: MyApp
+            # serviceName: statefulset-demo-service
+            # replicas: 3
+            # updateStrategy:
+            #     type: RollingUpdate
+            # template:
+            #     metadata:
+            #     labels:
+            #         app: MyApp
+            #     spec:
+            #     containers:
+            #     - name: stateful-set-container
+            #         image: nginx
+            #         ports:
+            #         - containerPort: 80
+            #         name: http
+            #         volumeMounts:
+            #         - name: hello-web-disk
+            #         mountPath: "/var/www/html"
+            # volumeClaimTemplates:
+            # - metadata:
+            #     name: hello-web-disk
+            #     spec:
+            #     accessModes: [ "ReadWriteOnce" ]
+            #     resources:
+            #         requests:
+            #         storage: 30Gi
+kubectl apply -f statefulset-demo.yaml
+
