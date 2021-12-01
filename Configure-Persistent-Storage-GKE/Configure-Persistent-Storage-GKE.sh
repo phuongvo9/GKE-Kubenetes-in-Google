@@ -84,4 +84,21 @@ kubectl exec -it pvc-demo-pod -- sh
     chmod +x /var/www/html/index.html
     cat /var/www/html/index.html
     exit
+###################
+## Test the persistence of the PV by deleting the pod
+##################
 
+kubectl delete pod pvc-demo-pod
+kubectl get pods
+    # show PVC
+kubectl get persistentvolumeclaim
+    # Redeploy the pvc-demo-pod.
+
+kubectl apply -f pod-volume-demo.yaml
+
+    # The Pod will deploy and the status will change to "Running" faster this time because the PV already exists and does not need to be create
+# verify the PVC is is still accessible within the Pod,
+kubectl exec -it pvc-demo-pod -- sh
+
+    cat /var/www/html/index.html
+    #Output: Test webpage in a persistent volume!
