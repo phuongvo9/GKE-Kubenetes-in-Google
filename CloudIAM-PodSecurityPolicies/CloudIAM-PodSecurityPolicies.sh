@@ -55,6 +55,7 @@ kubectl get podsecuritypolicy restricted-psp
 
 ################################################################
 #### Create a ClusterRole for a pod security policy
+##### --Bind Username 1 to the cluster admin role and create the restricted-pods role
 ################################################################
 
             # kind: ClusterRole
@@ -79,4 +80,6 @@ kubectl create clusterrolebinding cluster-admin-binding \
     --user $USERNAME_1_EMAIL
 
 kubectl get clusterrole restricted-pods-role
+   
+    # ------ The new ClusterRole is ready, but it is not yet bound to a subject, and therefore is not yet active
 
