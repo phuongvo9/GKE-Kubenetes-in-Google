@@ -53,3 +53,30 @@ kubectl get podsecuritypolicy restricted-psp
     # restricted-psp   false          RunAsAny   MustRunAsNonRoot   RunAsAny   RunAsAny   false            *
 
 
+################################################################
+#### Create a ClusterRole for a pod security policy
+################################################################
+
+            # kind: ClusterRole
+            # apiVersion: rbac.authorization.k8s.io/v1
+            # metadata:
+            # name: restricted-pods-role
+            # rules:
+            # - apiGroups:
+            # - extensions
+            # resources:
+            # - podsecuritypolicies
+            # resourceNames:
+            # - restricted-psp
+            # verbs:
+            # - use
+# Create an environment variable to store the mail address of my account
+export USERNAME_1_EMAIL=$(gcloud info --format='value(config.account)')
+
+# Grant my user account cluster-admin privileges
+kubectl create clusterrolebinding cluster-admin-binding \
+    --clusterrole cluster-admin \
+    --user $USERNAME_1_EMAIL
+
+kubectl get clusterrole restricted-pods-role
+
