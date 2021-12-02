@@ -83,3 +83,15 @@ kubectl get clusterrole restricted-pods-role
    
     # ------ The new ClusterRole is ready, but it is not yet bound to a subject, and therefore is not yet active
 
+
+
+
+################################################################
+#### Activate Security Policy
+################################################################
+# PodSecurityPolicy controller must be enabled to affect the admission control of new Pods in the cluster
+# Warning: If we do not define and authorize policies prior to enabling the PodSecurityPolicy controller, some accounts will not be able to deploy or run Pods on the cluster.
+
+
+# enable the PodSecurityPolicy controller
+gcloud beta container clusters update $my_cluster --zone $my_zone --enable-pod-security-policy
