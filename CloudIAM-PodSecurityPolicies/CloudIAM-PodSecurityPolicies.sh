@@ -44,3 +44,12 @@ gcloud container clusters get-credentials $my_cluster --zone $my_zone
 git clone https://github.com/GoogleCloudPlatform/training-data-analyst
 ln -s ~/training-data-analyst/courses/ak8s/v1.1 ~/ak8s
 cd ~/ak8s/Security/
+
+kubectl apply -f restricted-psp.yaml
+kubectl get podsecuritypolicy restricted-psp
+    # Output:
+    # Warning: policy/v1beta1 PodSecurityPolicy is deprecated in v1.21+, unavailable in v1.25+
+    # NAME             PRIV    CAPS   SELINUX    RUNASUSER          FSGROUP    SUPGROUP   READONLYROOTFS   VOLUMES
+    # restricted-psp   false          RunAsAny   MustRunAsNonRoot   RunAsAny   RunAsAny   false            *
+
+
