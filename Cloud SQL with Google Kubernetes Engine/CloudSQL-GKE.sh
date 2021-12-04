@@ -24,8 +24,6 @@ cd ~/ak8s/Cloud_SQL/
 
 # Create a Cloud SQL instance
 gcloud sql instances create sql-instance --tier=db-n1-standard-2 --region=us-central1
-# root SQL user password is blank by default.
-
 
 # Create an environment variable to hold the Cloud SQL instance name
 export SQL_NAME=[Cloud SQL Instance Name]
@@ -55,9 +53,12 @@ kubectl create secret generic sql-credentials \
 # mv ~/credentials.json .
 
 
-# Create a Secret for your Google Cloud Service Account credentials
+# Create a Secret for the Google Cloud Service Account credentials
 kubectl create secret generic google-credentials\
    --from-file=key.json=credentials.json
+    # the file is uploaded to the Secret using the name key.json.
+    # That is the file name that a container will see when this Secret is attached as a Secret Volume.
+
 
 
 
