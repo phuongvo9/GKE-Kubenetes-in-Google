@@ -30,9 +30,9 @@ kubectl get namespaces
 
 kubectl describe namespaces production
 
-##############################
+###################################
 ## Create a Resource in a Namespace
-##############################
+###################################
 
     # Note: need to specify the namespace production when creating a new Pod - Otherwise, it will use "default" ns
             # apiVersion: v1
@@ -53,3 +53,24 @@ kubectl apply -f ./my-pod.yaml --namespace=production
 kubectl get pods
 kubectl get pods --namespace=production
 
+ 
+###################################
+## Create Roles and RoleBindings
+###################################
+
+# -----create a custom role, and then create a RoleBinding that grants Username 2 the editor role in the production namespace.
+    # pod-reader-role.yaml
+            # kind: Role
+            # apiVersion: rbac.authorization.k8s.io/v1
+            # metadata:
+            #   namespace: production
+            #   name: pod-reader
+            # rules:
+            # - apiGroups: [""]
+            #   resources: ["pods"]
+            #   verbs: ["create", "get", "list", "watch"]
+## Create a custome Role
+    # Grant my account cluster-admin privileges
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user student-03-f7546ffe711b@qwiklabs.net
+    # Create role pod-reader
+kubectl apply -f pod-reader-role.yaml
