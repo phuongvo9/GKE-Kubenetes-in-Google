@@ -79,3 +79,7 @@ kubectl get services
 
 
 
+### --- Connect to the Wordpress instance
+# Using load balancer IP
+# Completed
+
