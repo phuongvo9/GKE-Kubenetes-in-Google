@@ -55,3 +55,12 @@ kubectl create -f gcp-gke-monitor-test.yaml
     # Log Test
     # Crash the Pod
 
+# MONITORING: Create custom dasboard with custom metrics 
+
+
+###################################################
+# Creating Alerts with Kubernetes Engine Monitoring
+###################################################
+
+# Create an alert policy
+
