@@ -45,3 +45,69 @@ cd ~/ak8s/Probes/
 
 kubectl create -f exec-liveness.yaml
 kubectl describe pod liveness-exec
+kubectl get pod liveness-exec
+
+# Delete the liveness probe demo pod
+kubectl delete pod liveness-exec
+
+
+##################################################
+### Configure readiness probes
+##################################################
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    test: readiness
+  name: readiness-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: readiness-test
+  template:
+    metadata:
+      labels:
+        app: readiness-test
+    spec:
+      containers:
+      - name: readiness
+        image: gcr.io/google-samples/hello-app:1.0
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        args:
+        - /bin/sh
+        - -c
+        - sleep 30; nohup ./hello-app &2>/dev/null & touch /tmp/healthy; export xx=$((60+$RANDOM % 120)) ; sleep $xx ;  rm -rf /tmp/healthy
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 45
+          timeoutSeconds: 1
+          periodSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+          periodSeconds: 5
+####
+kubectl create -f readiness-deployment.yaml
+kubectl get pods
+
+# After about 30 seconds the startup script will have created the /tmp/healthy file that then allows the next scheduled readiness test to pass and the Pods will be listed as Ready as shown here.
+
+# Configure a load balancer Service
+
+kubectl create -f readiness-service.yaml
+kubectl describe service readiness-svc
+
+kubectl get pods
+export EXTERNAL_IP=$(kubectl get services readiness-svc -o json | jq -r '.status.loadBalancer.ingress[0].ip')
+curl $EXTERNAL_IP
