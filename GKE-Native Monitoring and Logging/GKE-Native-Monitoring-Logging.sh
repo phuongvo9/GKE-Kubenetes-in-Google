@@ -63,4 +63,6 @@ kubectl create -f gcp-gke-monitor-test.yaml
 ###################################################
 
 # Create an alert policy
+# Catch alerts
+# 
 
