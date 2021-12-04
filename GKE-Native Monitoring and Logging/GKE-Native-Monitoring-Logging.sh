@@ -43,3 +43,10 @@ gcloud builds submit --tag=gcr.io/$PROJECT_ID/gcp-gke-monitor-test .
     docker build -t gcr.io/${PROJECT_ID}/gcp-gke-monitor-test .
 
 cd ..
+# eplace a placeholder value in the gcp-gke-monitor-test.yaml file with the Docker image we just pushed to gcr.io
+sed -i "s/\[DOCKER-IMAGE\]/gcr\.io\/${PROJECT_ID}\/gcp-gke-monitor-test\:latest/" gcp-gke-monitor-test.yaml
+
+# create the deployment and service we will use to test Kubernetes Engine Monitoring.
+kubectl create -f gcp-gke-monitor-test.yaml
+
+
