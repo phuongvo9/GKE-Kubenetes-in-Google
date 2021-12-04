@@ -24,6 +24,43 @@ cd ~/ak8s/Cloud_SQL/
 
 # Create a Cloud SQL instance
 gcloud sql instances create sql-instance --tier=db-n1-standard-2 --region=us-central1
+# root SQL user password is blank by default.
 
 
+# Create an environment variable to hold the Cloud SQL instance name
 export SQL_NAME=[Cloud SQL Instance Name]
+
+# Connect to the Cloud SQL instance
+gcloud sql connect sql-instance
+
+create database wordpress;
+use wordpress;
+show tables;
+exit;
+
+
+### --- Prepare a Service Account with permission to access Cloud SQL
+# create a Service Account > Role: Cloud SQL Client
+# create key for service account > Download JSON key
+
+
+### --- Create Secrets
+# create a Secret for your MySQL credentials
+kubectl create secret generic sql-credentials \
+   --from-literal=username=sqluser\
+   --from-literal=password=sqlpassword
+
+
+# Upload key for service account to Cloud Shell
+# mv ~/credentials.json .
+
+
+# Create a Secret for your Google Cloud Service Account credentials
+kubectl create secret generic google-credentials\
+   --from-file=key.json=credentials.json
+
+
+
+
+
+
