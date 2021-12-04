@@ -27,3 +27,19 @@ cd ~/ak8s/Monitoring/
 
 kubectl create -f hello-v2.yaml
 kubectl get deployments
+
+
+##################################################
+###Deploy the GCP-GKE-Monitor-Test application
+##################################################
+#https://github.com/GoogleCloudPlatform/training-data-analyst/tree/master/courses/ak8s/v1.1/Monitoring/gcp-gke-monitor-test
+export PROJECT_ID="$(gcloud config get-value project -q)"
+cd gcp-gke-monitor-test
+
+#  build the Docker image for the load testing application and push the image to the Google gcr.io registry
+gcloud builds submit --tag=gcr.io/$PROJECT_ID/gcp-gke-monitor-test .
+
+# Alternatively, we can also use Docker directly to build and push an image to gcr.io
+    docker build -t gcr.io/${PROJECT_ID}/gcp-gke-monitor-test .
+
+cd ..
