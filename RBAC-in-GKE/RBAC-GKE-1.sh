@@ -16,3 +16,40 @@ cd ~/ak8s/RBAC/
 ##############################
 
 
+# Connect to GKE cluster
+gcloud container clusters get-credentials $my_cluster --zone $my_zone
+
+# Create production namespace
+        # apiVersion: v1
+        # kind: Namespace
+        # metadata:
+        # name: production
+
+kubectl create -f ./my-namespace.yaml
+kubectl get namespaces
+
+kubectl describe namespaces production
+
+##############################
+## Create a Resource in a Namespace
+##############################
+
+    # Note: need to specify the namespace production when creating a new Pod - Otherwise, it will use "default" ns
+            # apiVersion: v1
+            # kind: Pod
+            # metadata:
+            # name: nginx
+            # labels:
+            #     name: nginx
+            # spec:
+            # containers:
+            # - name: nginx
+            #     image: nginx
+            #     ports:
+            #     - containerPort: 80
+
+kubectl apply -f ./my-pod.yaml --namespace=production
+
+kubectl get pods
+kubectl get pods --namespace=production
+
