@@ -49,4 +49,9 @@ sed -i "s/\[DOCKER-IMAGE\]/gcr\.io\/${PROJECT_ID}\/gcp-gke-monitor-test\:latest/
 # create the deployment and service we will use to test Kubernetes Engine Monitoring.
 kubectl create -f gcp-gke-monitor-test.yaml
 
+### --- use the GCP-GKE-Monitor-Test application to explore different aspects of Kubernetes Engine Monitoring
+    # Generate CPU Load
+    # Custom Metrics
+    # Log Test
+    # Crash the Pod
 
