@@ -69,8 +69,35 @@ kubectl get pods --namespace=production
             # - apiGroups: [""]
             #   resources: ["pods"]
             #   verbs: ["create", "get", "list", "watch"]
-## Create a custome Role
+## -------------- Create a custome Role--------------------------------
     # Grant my account cluster-admin privileges
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user student-03-f7546ffe711b@qwiklabs.net
     # Create role pod-reader
 kubectl apply -f pod-reader-role.yaml
+
+kubectl get roles --namespace production
+
+## ----------------Create a RoleBinding-----------------------------
+    # Note: The role is used to assign privileges, but by itself it does nothing. The role must be bound to a user and an object, which is done in the RoleBinding
+            # kind: RoleBinding
+            # apiVersion: rbac.authorization.k8s.io/v1
+            # metadata:
+            # name: username2-editor
+            # namespace: production
+            # subjects:
+            # - kind: User
+            # name: [USERNAME_2_EMAIL]
+            # apiGroup: rbac.authorization.k8s.io
+            # roleRef:
+            # kind: Role
+            # name: pod-reader
+            # apiGroup: rbac.authorization.k8s.io
+export USER2=student-01-6d181293df2d@qwiklabs.net
+sed -i "s/\[USERNAME_2_EMAIL\]/${USER2}/" username2-editor-binding.yaml
+cat username2-editor-binding.yaml
+
+
+kubectl apply -f username2-editor-binding.yaml
+
+kubectl get rolebinding --namespace production
+# Now username2 is able to create the Prod - POD
