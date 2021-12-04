@@ -53,7 +53,7 @@ kubectl create secret generic sql-credentials \
 # mv ~/credentials.json .
 
 
-# Create a Secret for the Google Cloud Service Account credentials
+# Create a Secret for your Google Cloud Service Account credentials
 kubectl create secret generic google-credentials\
    --from-file=key.json=credentials.json
     # the file is uploaded to the Secret using the name key.json.
@@ -61,7 +61,21 @@ kubectl create secret generic google-credentials\
 
 
 
+### --- Deploy the SQL Proxy agent as a sidecar container
+#  deploys a demo Wordpress application container with the SQL Proxy agent as a sidecar container 
+    # In the Wordpress container environment settings the WORDPRESS_DB_HOST is specified using the localhost IP address. \
+    # The cloudsql-proxy sidecar container is configured to point to the Cloud SQL instance we created in the previous step. \
+    # The database username and password are passed to the Wordpress container as secret keys, and the JSON credentials file is passed to the container using a Secret volume. 
+    # A Service is also created to allow us to connect to the Wordpress instance from the internet.
 
+sed -i 's/<INSTANCE_CONNECTION_NAME>/'"${SQL_NAME}"'/g'\
+   sql-proxy.yaml
+
+kubectl apply -f sql-proxy.yaml
+
+
+kubectl get deployment wordpress
+kubectl get services
 
 
 
