@@ -97,3 +97,5 @@ kubectl get clusterrole restricted-pods-role
 gcloud beta container clusters update $my_cluster --zone $my_zone --enable-pod-security-policy
 
 #...
+
+gcloud beta container clusters update $my_cluster --zone $my_zone --enable-pod-security-policy
